@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terminal CTF - Local Privilege Escalation Challenge</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="terminal-container">
+<header class="terminal-header">
+<div class="terminal-title">
+<span class="terminal-icon">▢</span>
+<span>CTF Terminal</span>
+<span class="badge">LPE Challenge</span>
+</div>
+<div class="terminal-controls">
+<button id="btn-help" class="ctrl-btn" title="Help">?</button>
+<button id="btn-hint" class="ctrl-btn" title="Hint">💡</button>
+<button id="btn-reset" class="ctrl-btn" title="Reset">⟳</button>
+<button id="btn-fullscreen" class="ctrl-btn" title="Fullscreen">⛶</button>
+</div>
+</header>
+
+<div class="terminal-body">
+<div id="terminal-output" class="terminal-output" role="log" aria-live="polite"></div>
+<div class="terminal-input-line">
+<span class="prompt" id="prompt">user@ctf:~$</span>
+<input type="text" id="cmd-input" class="cmd-input" autocomplete="off" spellcheck="false" aria-label="Command input">
+<span class="cursor" aria-hidden="true"></span>
+</div>
+</div>
+
+<div class="terminal-footer">
+<div class="status-bar">
+<span id="status-user">User: user</span>
+<span id="status-level">Level: 1/5</span>
+<span id="status-hint">Press <kbd>?</kbd> for help | <kbd>Tab</kbd> complete | <kbd>↑/↓</kbd> history</span>
+</div>
+<div class="progress-bar">
+<div class="progress-track">
+<div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+</div>
+<div class="progress-labels">
+<span>Recon</span>
+<span>Exploit</span>
+<span>Root</span>
+</div>
+</div>
+</div>
+</div>
+
+<div id="help-modal" class="modal hidden" role="dialog" aria-labelledby="help-title">
+<div class="modal-content">
+<h2 id="help-title">Available Commands</h2>
+<div class="help-grid">
+<div class="help-section">
+<h3>Navigation & Recon</h3>
+<ul>
+<li><kbd>ls</kbd> <span>[-la] List directory</span></li>
+<li><kbd>cd</kbd> <span>[dir] Change directory</span></li>
+<li><kbd>pwd</kbd> <span>Print working directory</span></li>
+<li><kbd>find</kbd> <span>[path] [opts] Find files</span></li>
+<li><kbd>cat</kbd> <span>[file] Read file</span></li>
+<li><kbd>strings</kbd> <span>[binary] Extract strings</span></li>
+<li><kbd>which</kbd> <span>[cmd] Locate command</span></li>
+<li><kbd>getcap</kbd> <span>[-r] Show capabilities</span></li>
+</ul>
+</div>
+<div class="help-section">
+<h3>Privilege Escalation</h3>
+<ul>
+<li><kbd>sudo</kbd> <span>[-l] [cmd] Run as root</span></li>
+<li><kbd>su</kbd> <span>Switch user</span></li>
+<li><kbd>id</kbd> <span>Show current user</span></li>
+<li><kbd>export</kbd> <span>PATH=... Modify PATH</span></li>
+</ul>
+</div>
+<div class="help-section">
+<h3>System</h3>
+<ul>
+<li><kbd>help</kbd> <span>Show this help</span></li>
+<li><kbd>hint</kbd> <span>Get current level hint</span></li>
+<li><kbd>history</kbd> <span>Command history</span></li>
+<li><kbd>clear</kbd> <span>Clear terminal</span></li>
+<li><kbd>reset</kbd> <span>Reset challenge</span></li>
+<li><kbd>levels</kbd> <span>Show all levels</span></li>
+</ul>
+</div>
+</div>
+<button class="modal-close" id="help-close">Close</button>
+</div>
+</div>
+
+<div id="hint-modal" class="modal hidden" role="dialog" aria-labelledby="hint-title">
+<div class="modal-content">
+<h2 id="hint-title">Hint</h2>
+<p id="hint-text"></p>
+<button class="modal-close" id="hint-close">Close</button>
+</div>
+</div>
+
+<div id="win-modal" class="modal hidden" role="dialog" aria-labelledby="win-title">
+<div class="modal-content win-content">
+<div class="win-icon">🏁</div>
+<h2 id="win-title">Challenge Complete!</h2>
+<p>You've successfully escalated from <code>user</code> to <code>root</code>!</p>
+<div class="flag-display" id="flag-display"></div>
+<div class="win-stats">
+<div><span>Levels Completed:</span> <strong id="stat-levels">5/5</strong></div>
+<div><span>Commands Used:</span> <strong id="stat-cmds">0</strong></div>
+<div><span>Time:</span> <strong id="stat-time">00:00</strong></div>
+</div>
+<button class="modal-close" id="win-close">Play Again</button>
+</div>
+</div>
+
+<script src="terminal.js"></script>
+<script src="challenges.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

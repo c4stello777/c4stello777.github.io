@@ -1,189 +1,486 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/assets/Images/logo.png" />
-    <link rel="shortcut icon" href="/assets/Images/Baby.webp" type="image/x-icon" />
-    <link rel="stylesheet" href="/assets/css/style.css" type="text/css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <title>xD</title>
-    <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
-        @import url("https://fonts.googleapis.com/css2?family=VT323&display=swap");
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>4mal portfolio</title>
+<!--
+    - favicon
+  -->
+<link href="./assets/images/logo.ico" rel="shortcut icon" type="image/x-icon"/>
+<!--
+    - custom css link
+  -->
+<link href="./assets/css/style.css" rel="stylesheet"/>
+<!--
+    - google font link
+  -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+    /* Structural Scrolling Fix separating Navbar and Content Box */
+    @media (min-width: 1024px) {
+      .main-content {
+        /* Make it a flex column container */
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important; /* DO NOT SCROLL THIS ONE */
+      }
+      .navbar {
+        position: relative !important;
+        width: 100% !important;
+        border-radius: 20px !important;
+        /* Gap between navbar and the box */
+        margin-bottom: 25px !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        flex-shrink: 0 !important;
+        box-shadow: 0 4px 15px hsla(0, 0%, 0%, 0.1) !important;
+      }
+      .content-scroll-box {
+        flex-grow: 1;
+        overflow-y: auto;
+        /* Nice round layout */
+        border-radius: 20px;
+        /* This prevents content from rubbing exactly on the edge */
+        padding-right: 15px; 
+      }
+      /* Custom internal scrollbar for the scroll-box */
+      .content-scroll-box::-webkit-scrollbar {
+        width: 10px;
+        border-radius: 20px;
+      }
+      .content-scroll-box::-webkit-scrollbar-track {
+        background: transparent;
+        border-radius: 20px;
+      }
+      .content-scroll-box::-webkit-scrollbar-thumb {
+        background: var(--text-gradient-yellow);
+        border-radius: 20px;
+      }
+    }
+    
+    /* Resume download button - fully visible in both themes */
+    .resume-download-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      flex-shrink: 0 !important;
+      white-space: nowrap !important;
+      padding: 11px 18px !important;
+      border-radius: 10px !important;
+      font-weight: 600 !important;
+      gap: 8px !important;
+      font-size: 13.5px !important;
+      text-decoration: none !important;
+      border: 1px solid hsla(45, 100%, 72%, 0.4) !important;
+      /* Dark theme: solid yellow gradient, dark text */
+      background: linear-gradient(to bottom right, hsl(45, 100%, 72%), hsl(35, 100%, 68%)) !important;
+      color: hsl(240, 2%, 13%) !important;
+      box-shadow: 0 4px 14px hsla(45, 100%, 60%, 0.25), var(--shadow-1) !important;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease !important;
+      z-index: 5 !important;
+    }
+    .resume-download-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow: 0 8px 20px hsla(45, 100%, 60%, 0.35), var(--shadow-2) !important;
+    }
+    .resume-download-btn:active { transform: translateY(0); }
+    .resume-download-btn ion-icon { font-size: 18px !important; flex-shrink: 0; }
+    /* Light theme: dark gradient, light text */
+    body.light-theme .resume-download-btn {
+      background: linear-gradient(to bottom right, hsl(240, 2%, 18%), hsl(0, 0%, 10%)) !important;
+      color: hsl(45, 100%, 72%) !important;
+      border: 1px solid hsl(0, 0%, 25%) !important;
+      box-shadow: 0 4px 14px hsla(0, 0%, 0%, 0.25) !important;
+    }
+    body.light-theme .resume-download-btn:hover {
+      box-shadow: 0 8px 20px hsla(0, 0%, 0%, 0.3) !important;
+    }
+    /* Prevent clipping inside scroll box */
+    .resume header {
+      gap: 12px !important;
+      overflow: visible !important;
+    }
 
-        body {
-            background-color: #292a2d;
-            color: #a9a9b3;
-            font-family: "Poppins", sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-            position: relative; /* Ensure positioning for pseudo-element */
-        }
+    /* Skills: dots + tier (pro, no fake % bars) */
+    .skills-dots-grid { display: grid; gap: 18px; }
+    .skills-dots-grid .skills-item { margin-bottom: 0 !important; }
+    .skills-dots-grid .title-wrapper { margin-bottom: 10px !important; }
+    .skill-tier {
+      margin-left: auto;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 11px;
+      border-radius: 20px;
+      background: var(--onyx);
+      color: var(--orange-yellow-crayola);
+      border: 1px solid var(--jet);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .skill-dots { display: flex; gap: 8px; align-items: center; }
+    .skill-dots .dot {
+      width: 11px; height: 11px; border-radius: 50%;
+      background: var(--jet);
+      border: 1px solid var(--jet);
+      display: block;
+    }
+    .skill-dots .dot.active {
+      background: var(--text-gradient-yellow);
+      border-color: hsla(45, 100%, 72%, 0.45);
+      box-shadow: 0 0 8px hsla(45, 100%, 60%, 0.35);
+    }
+    body.light-theme .skill-tier {
+      background: hsl(0, 0%, 100%);
+      color: hsl(0, 0%, 12%);
+      border-color: hsl(0, 0%, 80%);
+    }
+    body.light-theme .skill-dots .dot { background: hsl(0, 0%, 84%); border-color: hsl(0, 0%, 78%); }
+    body.light-theme .skill-dots .dot.active {
+      background: linear-gradient(to bottom right, hsl(240, 2%, 20%), hsl(0, 0%, 8%));
+      border-color: hsl(0, 0%, 20%);
+      box-shadow: 0 1px 4px hsla(0, 0%, 0%, 0.3);
+    }
+    @media (min-width: 768px) {
+      .skills-dots-grid { grid-template-columns: 1fr 1fr; gap: 20px 28px; }
+    }
 
-        /* Pseudo-element for background image */
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://img.freepik.com/free-photo/anime-moon-landscape_23-2151645921.jpg?size=626&ext=jpg&ga=GA1.1.1096992058.1725355131&semt=ais_hybrid') no-repeat center center fixed;
-            background-size: cover;
-            filter: blur(8px); /* Adjust blur intensity as needed */
-            z-index: -1; /* Ensure the image is behind other content */
-            opacity: 0.5; /* Optional: adjust opacity for desired effect */
-        }
-
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            height: 100vh; /* Full height for first section */
-            z-index: 1; /* Ensure container is above background */
-        }
-
-        .name h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            font-family: "VT323", monospace;
-        }
-
-        .button {
-            background: chartreuse;
-            color: black;
-            padding: 10px 20px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-top: 20px;
-            transition: background 0.3s ease;
-        }
-
-        .button:hover {
-            background: #a0e582;
-        }
-
-        .social {
-            margin-top: 20px;
-            display: flex;
-            gap: 15px;
-        }
-
-        .social i.btn img {
-            width: 32px;
-            height: 32px;
-        }
-
-        .second-section {
-            width: 100%;
-            height: 100vh; /* Full height for scrollable view */
-            display: none; /* Hide second section initially */
-            overflow-y: auto; /* Enable vertical scrolling */
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 10px;
-            padding: 20px;
-            position: relative;
-            z-index: 1; /* Ensure container is above background */
-        }
-
-        .content-section {
-            text-align: center;
-            color: #fff;
-            margin-bottom: 20px;
-        }
-
-        .content-section h2 {
-            margin-bottom: 10px;
-        }
-
-        .content-section p {
-            margin-bottom: 10px;
-        }
-    </style>
-</head>
+    /* Dynamic Light Theme Variable Overrides */
+    body.light-theme {
+      --smoky-black: hsl(0, 0%, 95%);
+      --eerie-black-1: hsl(0, 0%, 100%);
+      --eerie-black-2: hsl(0, 0%, 98%);
+      --onyx: hsl(0, 0%, 90%);
+      --jet: hsl(0, 0%, 85%);
+      --white-1: hsl(0, 0%, 10%);
+      --white-2: hsl(0, 0%, 15%);
+      --light-gray: hsl(0, 0%, 25%);
+      --light-gray-70: hsla(0, 0%, 25%, 0.7);
+      --border-gradient-onyx: linear-gradient(to bottom right, hsl(0, 0%, 80%) 0%, hsla(0, 0%, 80%, 0) 50%);
+      --bg-gradient-jet: linear-gradient(to bottom right, hsla(0, 0%, 90%, 0.251) 0%, hsla(0, 0%, 95%, 0) 100%), hsl(0, 0%, 98%);
+      --bg-gradient-onyx: linear-gradient(to bottom right, hsl(0, 0%, 90%) 3%, hsl(0, 0%, 95%) 97%);
+    }
+    </style></head>
 <body>
-    <!-- First Section with Name and Button -->
-    <div class="container" id="firstSection">
-        <div class="name">
-            <h1>It's Me Castello xD</h1>
-        </div>
-        <button class="button" id="whoamiButton">Whoami</button>
-    </div>
-
-    <!-- Social Media Links at the Bottom -->
-    <div class="social">
-        <a href="https://www.instagram.com/castello.777/?r=nametag">
-            <i class="btn"><img src="/assets/Images/instagram (1).svg" alt="Instagram" /></i>
-        </a>
-        <a href="https://github.com/Cybercastello">
-            <i class="btn"><img src="/assets/Images/Github.svg" alt="GitHub" /></i>
-        </a>
-        <a href="https://twitter.com/CCastello318">
-            <i class="btn"><img src="/assets/Images/twitter.svg" alt="Twitter" /></i>
-        </a>
-        <a href="https://tryhackme.com/p/Amal.s.Babu">
-            <i class="btn"><img src="/assets/Images/tryhackme.svg" alt="TryHackMe" /></i>
-        </a>
-        <a href="https://www.linkedin.com/in/amal-s-babu-98385b252">
-            <i class="btn"><img src="/assets/Images/linkedin.svg" alt="LinkedIn" /></i>
-        </a>
-    </div>
-
-    <!-- Second Section with Scrollable Content -->
-    <div class="second-section" id="secondSection">
-        <div class="content-section" id="whoami">
-            <h2>Whoami</h2>
-            <p>Amal aka c4s73Llo, Cyber Security Enthusiast...</p>
-        </div>
-
-        <div class="content-section" id="achievements">
-            <h2>Achievements</h2>
-            <p>Found multiple vulnerabilities in real-world web applications, secured big companies like Apple, NASA, Nokia, etc.</p>
-        </div>
-
-        <div class="content-section" id="skills">
-            <h2>Skills</h2>
-            <p>Penetration Testing, Web Application Security, Bug Bounty Hunting, CTF Participation...</p>
-        </div>
-
-        <div class="content-section" id="education">
-            <h2>Education</h2>
-            <p>BSc in Cyber Forensics...</p>
-        </div>
-
-        <div class="content-section" id="projects">
-            <h2>Projects</h2>
-            <p>Details about various cybersecurity projects...</p>
-        </div>
-
-        <div class="content-section" id="contact">
-            <h2>Contact</h2>
-            <p>Email: [Your Email]</p>
-            <p>Phone: [Your Phone]</p>
-        </div>
-    </div>
-
-    <script>
-        const whoamiButton = document.getElementById("whoamiButton");
-        const firstSection = document.getElementById("firstSection");
-        const secondSection = document.getElementById("secondSection");
-
-        // Function to Show Second Section and Hide First Section on Button Click
-        whoamiButton.addEventListener("click", () => {
-            firstSection.style.display = "none"; // Hide the first section
-            secondSection.style.display = "block"; // Show the second section
-        });
-    </script>
+<!--
+    - #MAIN
+  -->
+<button class="theme-btn" data-theme-btn="" style="position: fixed; top: 20px; right: 20px; z-index: 1000; background: var(--onyx); color: var(--orange-yellow-crayola); border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-2); border: 1px solid var(--jet); cursor: pointer; transition: 0.3s;"><ion-icon name="sunny-outline" style="font-size: 20px;"></ion-icon></button><main>
+<!--
+      - #SIDEBAR
+    -->
+<aside class="sidebar" data-sidebar="">
+<div class="sidebar-info">
+<figure class="avatar-box">
+<img alt="Amal S Babu" src="./assets/images/profileamal.jpg" style="display: block; width: 120px; height: 120px; object-fit: cover; border-radius: 20px; box-shadow: var(--shadow-1);"/>
+</figure>
+<div class="info-content">
+<h1 class="name" title="Amal S Babu">Amal S Babu</h1>
+<p class="title">Pentester &amp; Researcher</p>
+</div>
+<button class="info_more-btn" data-sidebar-btn="">
+<span>Show Contacts</span>
+<ion-icon name="chevron-down"></ion-icon>
+</button>
+</div>
+<div class="sidebar-info_more">
+<div class="separator"></div>
+<ul class="contacts-list">
+<li class="contact-item">
+<div class="icon-box">
+<ion-icon name="mail-outline"></ion-icon>
+</div>
+<div class="contact-info">
+<p class="contact-title">Email</p>
+<a class="contact-link" href="mailto:amalsbabu543@gmail.com">amalsbabu543@gmail.com</a>
+</div>
+</li>
+<li class="contact-item">
+<div class="icon-box">
+<ion-icon name="phone-portrait-outline"></ion-icon>
+</div>
+<div class="contact-info">
+<p class="contact-title">Phone</p>
+<a class="contact-link" href="tel:+919947162905">+91 9947162905</a>
+</div>
+</li>
+<li class="contact-item">
+<div class="icon-box">
+<ion-icon name="location-outline"></ion-icon>
+</div>
+<div class="contact-info">
+<p class="contact-title">Location</p>
+<address>Kollam, Kerala, India</address>
+</div>
+</li>
+</ul>
+<div class="separator"></div>
+<ul class="social-list">
+<li class="social-item">
+<a class="social-link" href="https://www.linkedin.com/in/amal-s-babu-98385b252/">
+<ion-icon name="logo-linkedin"></ion-icon>
+</a>
+</li>
+<li class="social-item">
+<a class="social-link" href="https://github.com/c4stello777">
+<ion-icon name="logo-github"></ion-icon>
+</a>
+</li>
+<li class="social-item"><a class="social-link" href="https://instagram.com/castello.777"><ion-icon name="logo-instagram"></ion-icon></a></li></ul>
+</div>
+</aside>
+<!--
+      - #main-content
+    -->
+<div class="main-content">
+<!--
+        - #NAVBAR
+      -->
+<nav class="navbar">
+<ul class="navbar-list">
+<li class="navbar-item">
+<button class="navbar-link active" data-nav-link="">About</button>
+</li>
+<li class="navbar-item">
+<button class="navbar-link" data-nav-link="">Resume</button>
+</li>
+<li class="navbar-item">
+<button class="navbar-link" data-nav-link="">Portfolio</button>
+</li>
+<li class="navbar-item">
+<button class="navbar-link" data-nav-link="">Activities</button>
+</li>
+<li class="navbar-item"><button class="navbar-link" data-nav-link="">Achievements</button></li>
+</ul>
+</nav>
+<!--
+        - #ABOUT
+      -->
+<div class="content-scroll-box"><article class="about active" data-page="about">
+<header>
+<h2 class="h2 article-title">About me</h2>
+</header>
+<section class="about-text"><p>Cyber Forensics student with a background in ethical hacking, coding, and digital forensics. Skilled in network, web, and wireless pentesting with a focus on offensive security and solid defensive knowledge. Experienced with SOC tools like Splunk, Wazuh, and Snort for threat monitoring and response.</p></section>
+<!--
+          - service
+        -->
+<section class="service">
+<h3 class="h3 service-title">What i'm doing</h3>
+<ul class="service-list">
+<li class="service-item">
+<div class="service-icon-box"><ion-icon name="shield-checkmark-outline" style="color: var(--orange-yellow-crayola); font-size: 40px;"></ion-icon></div>
+<div class="service-content-box">
+<h4 class="h4 service-item-title">Vulnerability Assessment</h4>
+<p class="service-item-text">Identifying and mitigating security risks in networks and systems using industry tools.</p>
+</div>
+</li>
+<li class="service-item">
+<div class="service-icon-box"><ion-icon name="lock-open-outline" style="color: var(--orange-yellow-crayola); font-size: 40px;"></ion-icon></div>
+<div class="service-content-box">
+<h4 class="h4 service-item-title">Penetration Testing</h4>
+<p class="service-item-text">Simulating cyber attacks to identify and fix exploitable vulnerabilities on web and network targets.</p>
+</div>
+</li>
+<li class="service-item">
+<div class="service-icon-box"><ion-icon name="search-outline" style="color: var(--orange-yellow-crayola); font-size: 40px;"></ion-icon></div>
+<div class="service-content-box">
+<h4 class="h4 service-item-title">Digital Forensics</h4>
+<p class="service-item-text">Investigating cyber incidents, analyzing digital evidence to track anomalies.</p>
+</div>
+</li>
+<li class="service-item">
+<div class="service-icon-box"><ion-icon name="eye-outline" style="color: var(--orange-yellow-crayola); font-size: 40px;"></ion-icon></div>
+<div class="service-content-box">
+<h4 class="h4 service-item-title">SOC Operations</h4>
+<p class="service-item-text">Monitoring and analyzing security events using tools like Splunk and Wazuh.</p>
+</div>
+</li>
+</ul>
+</section>
+<!--
+          - testimonials
+        -->
+<!--
+          - testimonials modal
+        -->
+<!--
+          - clients
+        -->
+</article><article class="resume" data-page="resume">
+<header style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%; margin-bottom: 20px; padding-right: 15px;">
+<h2 class="h2 article-title">Resume</h2>
+<a class="resume-download-btn" download="Amal_S_Babu.pdf" href="./Amal_S_Babu.pdf"><ion-icon name="download-outline"></ion-icon>Download Resume</a></header>
+<section class="timeline">
+<div class="title-wrapper">
+<div class="icon-box">
+<ion-icon name="book-outline"></ion-icon>
+</div>
+<h3 class="h3">Education</h3>
+</div>
+<ol class="timeline-list">
+<li class="timeline-item">
+<h4 class="h4 timeline-item-title">Mahatma Gandhi University</h4>
+<span>2023 — 2026</span>
+<p class="timeline-text">BSC CYBER FORENSIC. Kochi, Kerala.</p>
+</li>
+<li class="timeline-item">
+<h4 class="h4 timeline-item-title">Govt.Higher Secondary School, Nedungolam</h4>
+<span>2021 — 2023</span>
+<p class="timeline-text">COMPUTER SCIENCE. Kollam, Kerala.</p>
+</li>
+</ol>
+</section>
+<section class="timeline">
+<div class="title-wrapper">
+<div class="icon-box">
+<ion-icon name="book-outline"></ion-icon>
+</div>
+<h3 class="h3">Experience</h3>
+</div>
+<ol class="timeline-list">
+<li class="timeline-item">
+<h4 class="h4 timeline-item-title">Cyber Security Intern @ ShadowFox</h4>
+<span>09/2024 — 09/2024</span>
+<p class="timeline-text">Gained valuable hands-on experience in threat analysis, network security, and forensic analysis. Worked with industry-standard tools to apply skills in real-world cybersecurity scenarios.</p>
+</li>
+</ol>
+</section>
+<section class="skill">
+<h3 class="h3 skills-title">My skills</h3>
+<ul class="skills-list content-card skills-dots-grid">
+<li class="skills-item">
+<div class="title-wrapper">
+<h5 class="h5">Vulnerability Assessment</h5>
+<span class="skill-tier">Expert</span>
+</div>
+<div class="skill-dots" role="img" aria-label="Vulnerability Assessment: 5 out of 5, Expert">
+<span class="dot active"></span><span class="dot active"></span><span class="dot active"></span><span class="dot active"></span><span class="dot active"></span>
+</div>
+</li>
+<li class="skills-item">
+<div class="title-wrapper">
+<h5 class="h5">Penetration Testing</h5>
+<span class="skill-tier">Advanced</span>
+</div>
+<div class="skill-dots" role="img" aria-label="Penetration Testing: 4 out of 5, Advanced">
+<span class="dot active"></span><span class="dot active"></span><span class="dot active"></span><span class="dot active"></span><span class="dot"></span>
+</div>
+</li>
+<li class="skills-item">
+<div class="title-wrapper">
+<h5 class="h5">Digital Forensics</h5>
+<span class="skill-tier">Advanced</span>
+</div>
+<div class="skill-dots" role="img" aria-label="Digital Forensics: 4 out of 5, Advanced">
+<span class="dot active"></span><span class="dot active"></span><span class="dot active"></span><span class="dot active"></span><span class="dot"></span>
+</div>
+</li>
+<li class="skills-item">
+<div class="title-wrapper">
+<h5 class="h5">Python &amp; Scripting</h5>
+<span class="skill-tier">Proficient</span>
+</div>
+<div class="skill-dots" role="img" aria-label="Python and Scripting: 3 out of 5, Proficient">
+<span class="dot active"></span><span class="dot active"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span>
+</div>
+</li>
+</ul>
+</section>
+</article><article class="portfolio" data-page="portfolio">
+<header>
+<h2 class="h2 article-title">Portfolio</h2>
+</header>
+<section class="projects">
+<ul class="filter-list">
+<li class="filter-item">
+<button class="active" data-filter-btn="">All</button>
+</li>
+<li class="filter-item">
+<button data-filter-btn="">Cybersecurity</button>
+</li>
+<li class="filter-item">
+<button data-filter-btn="">Development</button>
+</li>
+</ul>
+<div class="filter-select-box">
+<button class="filter-select" data-select="">
+<div class="select-value" data-selecct-value="">Select category</div>
+<div class="select-icon">
+<ion-icon name="chevron-down"></ion-icon>
+</div>
+</button>
+<ul class="select-list">
+<li class="select-item">
+<button data-select-item="">All</button>
+</li>
+<li class="select-item">
+<button data-select-item="">Cybersecurity</button>
+</li>
+<li class="select-item">
+<button data-select-item="">Development</button>
+</li>
+</ul>
+</div>
+<ul class="project-list">
+<li class="project-item active" data-category="cybersecurity" data-filter-item="">
+<a href="https://github.com/c4stello777/C7LAB-Automated-Hands-On-Vulnerable-Labs-Derived-from-Real-World-CVEs-and-Security-Write-ups" target="_blank">
+<figure class="project-img">
+<div class="project-item-icon-box">
+<ion-icon name="eye-outline"></ion-icon>
+</div>
+<img alt="c7lab" loading="lazy" src="./assets/images/c7lab.png"/>
+</figure>
+<h3 class="project-title">C7LAB - Vulnerable CVE Labs</h3>
+<p class="project-category">Cybersecurity</p>
+<p class="project-desc" style="color: var(--light-gray-70); font-size: 0.9em; margin-top: 10px;">A project that builds safe, containerized labs from real CVEs and write-ups to teach exploit and mitigation of flaws like SSRF, XSS, and SQLi.</p></a>
+</li>
+<li class="project-item active" data-category="development" data-filter-item="">
+<a href="https://github.com/c4stello777/ShadowTrap" target="_blank">
+<figure class="project-img">
+<div class="project-item-icon-box">
+<ion-icon name="eye-outline"></ion-icon>
+</div>
+<img alt="shadowtrap" loading="lazy" src="./assets/images/shadow.png"/>
+</figure>
+<h3 class="project-title">SHADOWTRAP - SSH Honeypot</h3>
+<p class="project-category">Development</p>
+<p class="project-desc" style="color: var(--light-gray-70); font-size: 0.9em; margin-top: 10px;">A Python SSH honeypot that simulates Linux to capture brute-force attacks, commands, and multi-port scans. Includes real-time Discord alerts.</p></a>
+</li>
+</ul>
+</section>
+</article><article class="activities" data-page="activities">
+<header>
+<h2 class="h2 article-title">Extra-Curricular &amp; Certifications</h2>
+</header>
+<section class="timeline"><div class="title-wrapper"><div class="icon-box"><ion-icon name="ribbon-outline" style="color: var(--orange-yellow-crayola); font-size: 20px;"></ion-icon></div><h3 class="h3">Certifications</h3></div><ol class="timeline-list"><li class="timeline-item"><h4 class="h4 timeline-item-title">eJPT(eLearnsecurity Junior Penetration Tester)</h4><span>ineSecurity</span></li><li class="timeline-item"><h4 class="h4 timeline-item-title">Microsoft Cybersecurity Analyst Professional Certificate</h4><span>Coursera</span></li><li class="timeline-item"><h4 class="h4 timeline-item-title">Oracle Cloud Infrastructure 2023 AI Certified Foundations Associate</h4><span>Oracle</span></li></ol><div class="title-wrapper"><div class="icon-box"><ion-icon name="shield-half-outline" style="color: var(--orange-yellow-crayola); font-size: 20px;"></ion-icon></div><h3 class="h3">Extra-Curricular Activities</h3></div><ol class="timeline-list"><li class="timeline-item"><p class="timeline-text">Conducted cybersecurity awareness workshops for college students on best practices and emerging threats.</p></li><li class="timeline-item"><p class="timeline-text">Participated in workshops, hackathons, and CTFs to enhance skills and track industry trends.</p></li><li class="timeline-item"><p class="timeline-text">Created CTF challenges in web security, cryptography, reverse engineering, and forensics.</p></li></ol></section></article><article class="achievements" data-page="achievements"><header><h2 class="h2 article-title">Honors &amp; Recognitions</h2></header><section class="timeline"><div class="title-wrapper"><div class="icon-box"><ion-icon name="trophy-outline" style="color: var(--orange-yellow-crayola); font-size: 20px;"></ion-icon></div><h3 class="h3">Achievements</h3></div><ol class="timeline-list"><li class="timeline-item"><h4 class="h4 timeline-item-title">#1 prize in CyberDome Kozhikode Summit CTF (DOMEKKD CTF) 2023</h4></li><li class="timeline-item"><h4 class="h4 timeline-item-title">Apple Hall of Fame x3</h4><span>Apple</span></li><li class="timeline-item"><h4 class="h4 timeline-item-title">Nokia Hall of Fame x4</h4><span>Nokia</span></li><li class="timeline-item"><h4 class="h4 timeline-item-title">Acknowledged by NCIIPC</h4><span>NCIIPC</span></li><li class="timeline-item"><h4 class="h4 timeline-item-title">NASA Hall of Fame</h4><span>NASA</span></li><li class="timeline-item"><h4 class="h4 timeline-item-title">State of California Hall of Fame</h4><span>State of California</span></li></ol></section></article></div>
+<!--
+        - #RESUME
+      -->
+<!--
+        - #PORTFOLIO
+      -->
+<!--
+        - #BLOG
+      -->
+<!--
+        - #CONTACT
+      -->
+</div>
+</main>
+<!--
+    - custom js link
+  -->
+<script src="./assets/js/script.js"></script>
+<!--
+    - ionicon link
+  -->
+<script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js" type="module"></script>
+<script nomodule="" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>
 </html>
