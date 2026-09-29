@@ -4,7 +4,13 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<meta content="#131315" name="theme-color"/>
+<meta content="4mal portfolio — Amal S Babu, Pentester & Researcher" name="description"/>
+<meta content="yes" name="mobile-web-app-capable"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="4mal portfolio" name="apple-mobile-web-app-title"/>
 <title>4mal portfolio</title>
 <!--
     - favicon
@@ -106,6 +112,48 @@
     .resume header {
       gap: 12px !important;
       overflow: visible !important;
+    }
+
+    /* Android / iOS: safe-area, touch targets, no-zoom inputs */
+    html { -webkit-text-size-adjust: 100%; }
+    body { overscroll-behavior-y: none; }
+    a, button { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+    .navbar {
+      padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+    }
+    .navbar-link { min-height: 44px; display: inline-flex; align-items: center; }
+    .info_more-btn { min-width: 44px; min-height: 44px; }
+    .social-item .social-link { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+    .filter-item button { min-height: 44px; padding: 6px 4px; }
+    .form-input { font-size: 16px !important; } /* stops iOS auto-zoom on focus */
+    .form-btn { min-height: 48px; }
+    .theme-btn {
+      top: calc(12px + env(safe-area-inset-top, 0px)) !important;
+      right: calc(12px + env(safe-area-inset-right, 0px)) !important;
+    }
+    main { padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)); }
+    /* Very small phones: resume header wraps cleanly */
+    @media (max-width: 480px) {
+      .resume header { flex-wrap: wrap !important; align-items: flex-start !important; }
+      .resume-download-btn { width: 100%; justify-content: center; }
+      .service-item { padding: 18px; }
+      .content-card { padding: 18px; }
+      .blog-banner-box { height: 170px; }
+      .mapbox { height: 220px; }
+      .timeline-list { margin-left: 45px; }
+      .project-list, .blog-posts-list { grid-template-columns: 1fr; }
+    }
+    /* Coarse pointers: bigger hit areas */
+    @media (pointer: coarse) {
+      .icon-box { width: 40px; height: 40px; font-size: 18px; }
+      .navbar-link { padding: 15px 12px; }
+      .project-item > a, .blog-post-item > a { -webkit-tap-highlight-color: transparent; }
+    }
+    /* Landscape phones: compact chrome */
+    @media (max-height: 500px) and (orientation: landscape) {
+      .sidebar { max-height: 140px; }
+      .navbar-link { padding: 10px 12px; min-height: 40px; }
+      main { padding-bottom: 80px; }
     }
 
     /* Skills: dots + tier (pro, no fake % bars) */
