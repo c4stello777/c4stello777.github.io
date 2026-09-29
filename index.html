@@ -155,6 +155,37 @@
       .navbar-link { padding: 10px 12px; min-height: 40px; }
       main { padding-bottom: 80px; }
     }
+    /* Small-phone alignment: avatar row, info button, contacts */
+    @media (max-width: 579px) {
+      .sidebar-info { gap: 12px !important; min-width: 0; padding-right: 44px; }
+      .avatar-box { flex-shrink: 0 !important; }
+      .avatar-box img { width: 76px !important; height: 76px !important; border-radius: 16px !important; }
+      .info-content { min-width: 0 !important; flex: 1 1 auto !important; }
+      .info-content .name { font-size: 19px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 6px !important; }
+      .info-content .title { font-size: 11px !important; padding: 3px 10px !important; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+      .info_more-btn { top: 6px !important; right: 6px !important; border-radius: 0 14px 0 14px !important; padding: 8px !important; }
+      .sidebar { padding: 15px !important; }
+      .sidebar.active { max-height: 620px !important; }
+      .contact-item { gap: 12px !important; }
+      .contact-info { min-width: 0 !important; }
+      .contact-info .contact-link { word-break: break-all; font-size: 13px !important; white-space: normal !important; overflow: visible !important; text-overflow: clip !important; }
+      .service-icon-box { margin-inline: auto; }
+    }
+    @media (min-width: 380px) and (max-width: 579px) {
+      .avatar-box img { width: 92px !important; height: 92px !important; }
+    }
+    /* Navbar: never wrap to 2 rows on phones */
+    @media (max-width: 579px) {
+      .navbar-list { flex-wrap: nowrap !important; overflow-x: auto !important; justify-content: flex-start !important; scrollbar-width: none; }
+      .navbar-list::-webkit-scrollbar { display: none; }
+      .navbar-item { flex-shrink: 0; }
+      .navbar-link { padding: 15px 11px !important; font-size: 11px !important; white-space: nowrap; }
+    }
+    @media (max-width: 360px) {
+      .navbar-link { padding: 14px 8px !important; font-size: 10px !important; }
+      .avatar-box img { width: 68px !important; height: 68px !important; }
+      .info-content .name { font-size: 17px !important; }
+    }
 
     /* Skills: dots + tier (pro, no fake % bars) */
     .skills-dots-grid { display: grid; gap: 18px; }
